@@ -16,3 +16,4 @@ buildNumber.properties
 **/.mvn
 **/target/
 **/.gitignore
+/gulimall-commmon/gulimall-commmon.iml

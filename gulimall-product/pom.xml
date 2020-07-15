@@ -20,6 +20,18 @@
     </properties>
 
     <dependencies>
+        <!--依赖common-->
+        <dependency>
+            <groupId>com.atguigu.gulimall</groupId>
+            <artifactId>gulimall-commmon</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!--整合OSS-->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>3.10.2</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
