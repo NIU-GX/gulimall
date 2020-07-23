@@ -25,11 +25,13 @@ spring:
   #    url: jdbc:postgresql://192.168.10.10:5432/renren_fast
   #    username: postgres
   #    password: 123456
+
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
   resources:
     static-locations: classpath:/static/,classpath:/views/
+
 
 
 mybatis-plus:

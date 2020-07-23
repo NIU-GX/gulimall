@@ -1,8 +1,11 @@
 package com.atguigu.gulimall.product.service.impl;
 
+import com.atguigu.gulimall.product.service.CategoryBrandRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,6 +27,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
 //    @Autowired
 //    CategoryDao categoryDao;
+    @Autowired
+    CategoryBrandRelationService categoryBrandRelationService;
+
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -70,7 +76,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
             return categoryEntity;
         }).sorted((menu1, menu2) -> {
             // 菜单的排序
-            return (menu1.getSort() == null? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort());
+            return (menu1.getSort() == null ? 0 : menu1.getSort()) - (menu2.getSort() == null ? 0 : menu2.getSort());
         }).collect(Collectors.toList());
         return children;
     }
@@ -79,5 +85,38 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     public void removeMenuByIds(List<Long> asList) {
         // TODO 检查菜单是否被引用
         baseMapper.deleteBatchIds(asList);
+    }
+
+
+    // [2,25,225]
+    @Override
+    public Long[] findCatelogPath(Long catelogId) {
+        List<Long> paths = new ArrayList<>();
+
+        List<Long> parentPath = findParentPath(catelogId, paths);
+        Collections.sort(parentPath);
+
+        return parentPath.toArray(new Long[0]);
+    }
+
+    private List<Long> findParentPath(Long catelogId, List<Long> list) {
+        // 1. 收集当前节点ID
+        list.add(catelogId);
+        CategoryEntity byId = this.getById(catelogId);
+        if (byId.getParentCid() != 0) {
+            findParentPath(byId.getParentCid(),list);
+        }
+        return list;
+    }
+
+
+    /**
+     * 级联更新所有关联数据
+     */
+    @Override
+    public void updateCascade(CategoryEntity category) {
+        this.updateById(category);
+
+        categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
     }
 }

@@ -5,6 +5,7 @@ import com.atguigu.common.utils.R;
 import com.atguigu.gulimall.product.entity.CategoryEntity;
 import com.atguigu.gulimall.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -61,10 +62,11 @@ public class CategoryController {
     /**
      * 修改
      */
+    @Transactional
     @RequestMapping("/update")
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category){
-		categoryService.updateById(category);
+		categoryService.updateCascade(category);
 
         return R.ok();
     }

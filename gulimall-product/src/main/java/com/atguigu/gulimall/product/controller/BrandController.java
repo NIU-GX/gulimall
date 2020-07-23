@@ -2,11 +2,18 @@ package com.atguigu.gulimall.product.controller;
 
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;
+import com.atguigu.common.valid.AddGroup;
+import com.atguigu.common.valid.UpdateGroup;
+import com.atguigu.common.valid.UpdateStatusGroup;
 import com.atguigu.gulimall.product.entity.BrandEntity;
 import com.atguigu.gulimall.product.service.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -53,7 +60,7 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand){
+    public R save(@Validated(value = AddGroup.class) @RequestBody BrandEntity brand  /* ,BindResult result*/){
 		brandService.save(brand);
 
         return R.ok();
@@ -62,10 +69,22 @@ public class BrandController {
     /**
      * 修改
      */
+    @Transactional
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand){
-		brandService.updateById(brand);
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
+		brandService.updateDetail(brand);
+
+        return R.ok();
+    }
+
+    /**
+     * 修改status
+     */
+    @RequestMapping("/update/status")
+    //@RequiresPermissions("product:brand:update")
+    public R updateStatus(@Validated(UpdateStatusGroup.class) @RequestBody BrandEntity brand){
+        brandService.updateById(brand);
 
         return R.ok();
     }

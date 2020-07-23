@@ -33,6 +33,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.atguigu.gulimall</groupId>
+			<artifactId>gulimall-commmon</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
