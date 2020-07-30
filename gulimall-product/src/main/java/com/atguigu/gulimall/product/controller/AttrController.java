@@ -3,13 +3,16 @@ package com.atguigu.gulimall.product.controller;
 import com.atguigu.common.utils.PageUtils;
 import com.atguigu.common.utils.R;
 import com.atguigu.gulimall.product.entity.AttrEntity;
+import com.atguigu.gulimall.product.entity.ProductAttrValueEntity;
 import com.atguigu.gulimall.product.service.AttrService;
+import com.atguigu.gulimall.product.service.ProductAttrValueService;
 import com.atguigu.gulimall.product.vo.AttrRespVo;
 import com.atguigu.gulimall.product.vo.AttrVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +28,24 @@ import java.util.Map;
 public class AttrController {
     @Autowired
     private AttrService attrService;
+    @Autowired
+    ProductAttrValueService productAttrValueService;
+
+
+    ///product/attr/update/{spuId}
+    @PostMapping("/update/{spuId}")
+    public R updateSpuAttr(@PathVariable("spuId") Long spuId,
+                           @RequestBody List<ProductAttrValueEntity> list) {
+        productAttrValueService.updateSpuAttr(spuId,list);
+        return R.ok();
+    }
+
+    ///product/attr/base/listforspu/{spuId}
+    @GetMapping("/base/listforspu/{spuId}")
+    public R listforspu(@PathVariable("spuId") Long spuId) {
+        List<ProductAttrValueEntity> list = productAttrValueService.baseAttrListForSpu(spuId);
+        return R.ok().put("data", list);
+    }
 
     ///product/attr/base/list/{catelogId}
     @GetMapping("/base/list/{catelogId}")
@@ -92,4 +113,20 @@ public class AttrController {
         return R.ok();
     }
 
+    /**
+     * 获取分类销售属性
+     * /product/attr/sale/list/{catelogId}
+     *
+     * @param params
+     * @param catelogId
+     * @return
+     */
+    @GetMapping("/sale/list/{catelogId}")
+    public R saleList(@RequestParam Map<String, Object> params,
+                      @PathVariable("catelogId") Long catelogId) {
+
+        PageUtils page = attrService.getSaleList(params, catelogId);
+
+        return R.ok().put("page", page);
+    }
 }

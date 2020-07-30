@@ -274,4 +274,11 @@ public class AttrServiceImpl extends ServiceImpl<AttrDao, AttrEntity> implements
 
         return pageUtils;
     }
+
+    @Override
+    public PageUtils getSaleList(Map<String, Object> params, Long catelogId) {
+        PageUtils page = this.queryPage(params);
+        return page;
+
+    }
 }
